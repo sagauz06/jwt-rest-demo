@@ -26,7 +26,8 @@ public class Person {
 	@Size(min = 1, message = "Name must be at least 1 characters long")
 	private String name;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne//(cascade = CascadeType.ALL)這個會造成資料初始化問題細節參考連結
+//	https://stackoverflow.com/questions/23645091/spring-data-jpa-and-hibernate-detached-entity-passed-to-persist-on-manytomany-re
 	@JoinColumn(name = "account_id", referencedColumnName = "id")
 	private Account account;
 
@@ -42,11 +43,10 @@ public class Person {
 	}
 
 	public Person(@NotNull @Size(min = 1, message = "Name must be at least 1 characters long") String name,
-			Account account, Date createdAt) {
+			Account account) {
 		super();
 		this.name = name;
 		this.account = account;
-		this.createdAt = createdAt;
 	}
 
 	public String getName() {

@@ -1,13 +1,16 @@
 package com.example.demo.domain;
 
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -30,13 +33,20 @@ public class Character {
 //	@JsonIgnore
 	private Account account;
 
-	@ManyToMany(mappedBy = "characters")
-	Set<Friend> friends;
+	@ManyToMany
+	@JoinTable(name = "characters_friends", joinColumns = @JoinColumn(name = "character_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
+	private Set<Friend> friends;
 
 	private String characterName;
 
 	public Character() {
 
+	}
+
+	public Character(String characterName, Set<Friend> friends, Account account) {
+		this.characterName = characterName;
+		this.friends = friends;
+		this.account = account;
 	}
 
 	public Account getAccount() {
@@ -65,6 +75,12 @@ public class Character {
 
 	public void setFriends(Set<Friend> friends) {
 		this.friends = friends;
+	}
+
+	@Override
+	public String toString() {
+		return "Character [id=" + id + ", account=" + account + ", friends=" + friends + ", characterName="
+				+ characterName + "]";
 	}
 
 }

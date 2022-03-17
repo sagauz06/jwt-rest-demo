@@ -1,8 +1,11 @@
 package com.example.demo.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,14 +21,17 @@ public class Friend {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "friend_generator")
 	private Long id;
 
-	@ManyToMany
-	@JoinTable(name = "characters_friends", joinColumns = @JoinColumn(name = "character_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
-	Set<Character> characters;
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "friends")
+	private Set<Character> characters = new HashSet<>();
 
 	private String friendName;
 
 	public Friend() {
 
+	}
+
+	public Friend(String friendName) {
+		this.friendName = friendName;
 	}
 
 	public Set<Character> getCharacters() {
@@ -46,6 +52,11 @@ public class Friend {
 
 	public Long getId() {
 		return id;
+	}
+
+	@Override
+	public String toString() {
+		return "Friend [id=" + id + ", characters=" + characters + ", friendName=" + friendName + "]";
 	}
 
 }

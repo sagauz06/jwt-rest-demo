@@ -37,6 +37,10 @@ public class Account {
 
 	}
 
+	public Account(String content) {
+		this.content = content;
+	}
+
 	public String getContent() {
 		return content;
 	}
@@ -55,6 +59,11 @@ public class Account {
 
 	public Long getId() {
 		return id;
+	}
+
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", content=" + content + ", person=" + person + "]";
 	}
 
 }
