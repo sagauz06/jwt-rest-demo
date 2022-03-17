@@ -30,8 +30,8 @@ public class Character {
 //	@JsonIgnore
 	private Account account;
 
-//	@ManyToMany(mappedBy = "friends")
-//	Set<Friend> friends;
+	@ManyToMany(mappedBy = "characters")
+	Set<Friend> friends;
 
 	private String characterName;
 
@@ -59,12 +59,12 @@ public class Character {
 		return id;
 	}
 
-//	public Set<Friend> getFriends() {
-//		return friends;
-//	}
-//
-//	public void setFriends(Set<Friend> friends) {
-//		this.friends = friends;
-//	}
+	public Set<Friend> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(Set<Friend> friends) {
+		this.friends = friends;
+	}
 
 }
