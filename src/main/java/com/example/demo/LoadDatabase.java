@@ -54,16 +54,28 @@ class LoadDatabase {
 			log.info("Preloading " + friendRepository.save(new Friend("小王")));
 			log.info("Preloading " + friendRepository.save(new Friend("小花")));
 //			新增人物帳號
-			log.info("Preloading " + accountRepository.save(new Account("學生")));
-			log.info("Preloading " + accountRepository.save(new Account("上班族")));
-			log.info("Preloading " + accountRepository.save(new Account("GM")));
+			Account account1 = new Account("學生");
+			Account account2 = new Account("上班族");
+			Account account3 = new Account("GM");
+			log.info("Preloading " + accountRepository.save(account1));
+			log.info("Preloading " + accountRepository.save(account2));
+			log.info("Preloading " + accountRepository.save(account3));
+//			account1.setPerson(person1);
+//			account2.setPerson(person2);
+//			account3.setPerson(person3);
 //			新增人物
-			Account account1 = accountRepository.findByContent("學生").orElseThrow();
-			Account account2 = accountRepository.findByContent("上班族").orElseThrow();
-			Account account3 = accountRepository.findByContent("GM").orElseThrow();
-			log.info("Preloading " + personRepository.save(new Person("玩家A", account1)));
-			log.info("Preloading " + personRepository.save(new Person("玩家B", account2)));
-			log.info("Preloading " + personRepository.save(new Person("玩家C", account3)));
+			Person person1 = new Person("玩家A");
+			Person person2 = new Person("玩家B");
+			Person person3 = new Person("玩家C");
+			log.info("Preloading " + personRepository.save(person1));
+			log.info("Preloading " + personRepository.save(person2));
+			log.info("Preloading " + personRepository.save(person3));
+			person1.setAccount(accountRepository.findById(1L).orElseThrow());
+			person2.setAccount(accountRepository.findById(2L).orElseThrow());
+			person3.setAccount(accountRepository.findById(3L).orElseThrow());
+			log.info("Update " + personRepository.save(person1));
+			log.info("Update " + personRepository.save(person2));
+			log.info("Update " + personRepository.save(person3));
 //			新增角色
 			Set<Friend> friends1 = new HashSet<>();
 			Set<Friend> friends2 = new HashSet<>();

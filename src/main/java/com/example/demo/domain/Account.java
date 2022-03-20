@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class Account {
 
 	private String content;
 
-	@OneToOne(mappedBy = "account")
+	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
 	private Person person;
 
 //	@ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -39,6 +40,19 @@ public class Account {
 
 	public Account(String content) {
 		this.content = content;
+	}
+
+	public Account(Long id, String content) {
+		super();
+		this.id = id;
+		this.content = content;
+	}
+
+	public Account(Long id, String content, Person person) {
+		super();
+		this.id = id;
+		this.content = content;
+		this.person = person;
 	}
 
 	public String getContent() {
@@ -58,6 +72,10 @@ public class Account {
 	}
 
 	public Long getId() {
+		return id;
+	}
+
+	public Long setId(Long id) {
 		return id;
 	}
 

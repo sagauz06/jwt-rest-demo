@@ -14,6 +14,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "persons")
 public class Person {
@@ -26,9 +31,16 @@ public class Person {
 	@Size(min = 1, message = "Name must be at least 1 characters long")
 	private String name;
 
-	@OneToOne//(cascade = CascadeType.ALL)這個會造成資料初始化問題細節參考連結
 //	https://stackoverflow.com/questions/23645091/spring-data-jpa-and-hibernate-detached-entity-passed-to-persist-on-manytomany-re
-	@JoinColumn(name = "account_id", referencedColumnName = "id")
+//	這個會造成資料初始化問題細節參考連結，但這個必要，loadDataBase已更改寫法，有關連的資料都先個存一次，再把有@JoinColumn的表查出需要的關聯pojo再set()然後再存一次，以下範例
+//	Person person1 = new Person("玩家A"); //
+//	personRepository.save(person1); //
+//	person1.setAccount(accountRepository.findById(1L).orElseThrow()); //
+//	log.info("Update " + personRepository.save(person1)); //
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "account_id") // , referencedColumnName = "id"
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore // 這個單元測試需要
 	private Account account;
 
 	private Date createdAt;
@@ -42,11 +54,32 @@ public class Person {
 
 	}
 
+	public Person(@NotNull @Size(min = 1, message = "Name must be at least 1 characters long") String name) {
+		super();
+		this.name = name;
+		this.createdAt = new Date();
+	}
+
+	public Person(Long id, @NotNull @Size(min = 1, message = "Name must be at least 1 characters long") String name,
+			Date createdAt) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.createdAt = new Date();
+	}
+
 	public Person(@NotNull @Size(min = 1, message = "Name must be at least 1 characters long") String name,
 			Account account) {
 		super();
 		this.name = name;
 		this.account = account;
+	}
+
+	public Person(Long id, @NotNull @Size(min = 1, message = "Name must be at least 1 characters long") String name) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.createdAt = new Date();
 	}
 
 	public String getName() {
